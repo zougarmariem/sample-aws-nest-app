@@ -6,12 +6,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('functions')
-  getAllFunctions() {
-    return this.appService.getAllFunctions();
+  async getAllFunctions() {
+    return await this.appService.getAllFunctions();
   }
 
   @Get('logs')
-  getAllLogs() {
-    return this.appService.getAllLogs();
+  async getAllLogs() {
+    return await this.appService.getAllLogs();
   }
 }

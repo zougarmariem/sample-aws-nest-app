@@ -12,9 +12,9 @@ AWS.config.update({
 @Injectable()
 export class AppService {
   /* get all functions  */
-  getAllFunctions(): void {
+  async getAllFunctions() {
     const lambda = new AWS.Lambda();
-    lambda.listFunctions({}, function (err, data) {
+    return await lambda.listFunctions({}, (err, data) => {
       if (err) {
         console.log('err*********', err, err.stack);
         return err;
@@ -26,7 +26,7 @@ export class AppService {
   }
 
   /* get all logs*/
-  getAllLogs(): void {
+  async getAllLogs() {
     const cwlogs = new AWS.CloudWatchLogs({ region: 'eu-west-1' });
     const params: GetLogEventsRequest = {
       logGroupName: '/aws/lambda/dn-p-dndev-lambda-transform-workflow-setup',
@@ -35,8 +35,13 @@ export class AppService {
       logStreamName: '2023/02/01/[$LATEST]7029d849df424e28a1a927836dc31cb5',
     };
     cwlogs.getLogEvents(params, function (err, data) {
-      if (err) console.log('**** errr *******', err, err.stack);
-      else console.log('**** success *******', data);
+      if (err) {
+        console.log(err.stack);
+        return err;
+      } else {
+        console.log(data);
+        return data;
+      }
     });
   }
 }
